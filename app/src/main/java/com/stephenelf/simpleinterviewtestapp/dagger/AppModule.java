@@ -1,6 +1,8 @@
 package com.stephenelf.simpleinterviewtestapp.dagger;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import javax.inject.Singleton;
 
@@ -23,5 +25,11 @@ public class AppModule {
         return mApplication;
     }
 
+    @Provides
+    @Singleton
+    SharedPreferences providesSharedPreferences(Application application) {
+        // Application reference must come from AppModule.class
+        return PreferenceManager.getDefaultSharedPreferences(application);
+    }
 }
 

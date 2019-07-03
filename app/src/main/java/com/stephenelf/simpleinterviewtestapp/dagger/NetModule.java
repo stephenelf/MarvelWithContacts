@@ -5,6 +5,7 @@ import android.app.Application;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.stephenelf.simpleinterviewtestapp.net.MarvelAPI;
 
 import java.util.concurrent.TimeUnit;
 
@@ -73,6 +74,13 @@ public class NetModule {
                 .build();
 
         return retrofit;
+    }
+
+    @Provides
+    @Singleton
+    MarvelAPI providesMarvelAPI(Retrofit retrofit){
+         MarvelAPI marvelAPI=retrofit.create(MarvelAPI.class);
+         return marvelAPI;
     }
 
 }

@@ -19,6 +19,7 @@ import dagger.android.HasActivityInjector;
 public class MyApplication extends Application implements HasActivityInjector {
 
     private NetComponent netComponent;
+    private static MyApplication INSTANCE;
 
     @Inject
     DispatchingAndroidInjector<Activity> dispatchingActivityInjector;
@@ -26,7 +27,7 @@ public class MyApplication extends Application implements HasActivityInjector {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        INSTANCE= this;
         netComponent = DaggerNetComponent.builder()
                 .appModule(new AppModule(this)) // This also corresponds to the name of your module: %component_name%Module
                 .netModule(new NetModule(getString(R.string.marver_base_url)))
@@ -38,5 +39,13 @@ public class MyApplication extends Application implements HasActivityInjector {
     @Override
     public AndroidInjector<Activity> activityInjector() {
         return dispatchingActivityInjector;
+    }
+
+    public static MyApplication getInstance(){
+        return INSTANCE;
+    }
+
+    public NetComponent getNetComponent() {
+        return netComponent;
     }
 }

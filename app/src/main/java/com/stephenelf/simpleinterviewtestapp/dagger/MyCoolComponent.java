@@ -11,21 +11,21 @@
  * limitations under the License.
  */
 
-package com.stephenelf.simpleinterviewtestapp.repositories;
+package com.stephenelf.simpleinterviewtestapp.dagger;
 
-import android.content.Context;
+import com.stephenelf.simpleinterviewtestapp.MainActivity;
+import com.stephenelf.simpleinterviewtestapp.MyApplication;
 
-import java.util.List;
+import javax.inject.Singleton;
 
-import io.reactivex.Single;
-import ir.mirrajabi.rxcontacts.Contact;
-import ir.mirrajabi.rxcontacts.RxContacts;
+import dagger.Component;
 
-public class ContactsRepository {
+@Singleton
+@Component(modules = {AppModule.class, NetModule.class, DatabaseModule.class, RepositoryModule.class})
+public interface MyCoolComponent {
 
-    public Single<List<Contact>> getAllContacts(Context context){
-          return RxContacts.fetch(context)
-                .filter(m->m.getInVisibleGroup() == 1)
-                .toSortedList(Contact::compareTo);
-    }
+    void inject(MyApplication myApplication);
+
+    void inject(MainActivity mainActivity);
+
 }

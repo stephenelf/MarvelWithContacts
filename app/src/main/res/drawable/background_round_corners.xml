@@ -16,5 +16,5 @@
     android:shape="rectangle" >
     <!-- you can use any color you want I used here gray color-->
     <solid android:color="#19779fab"/>
-    <corners android:radius="10dp"/>
+    <corners android:radius="20dp"/>
 </shape>

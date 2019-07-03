@@ -11,27 +11,26 @@
  * limitations under the License.
  */
 
-package com.stephenelf.simpleinterviewtestapp.database;
-
-import androidx.annotation.Nullable;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-import com.stephenelf.simpleinterviewtestapp.net.response.ThumbnailResponse;
-
-@Entity
-public class Character {
-
-    @PrimaryKey
-    public long id;
-    public String name;
+package com.stephenelf.simpleinterviewtestapp.util;
 
 
-    public ThumbnailResponse thumbnail;
+import android.content.Context;
+
+import androidx.annotation.NonNull;
+
+import com.bumptech.glide.GlideBuilder;
+import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
+import com.bumptech.glide.module.AppGlideModule;
+
+@com.bumptech.glide.annotation.GlideModule
+public final class GlideConfigurationModule extends AppGlideModule {
 
 
     @Override
-    public boolean equals(@Nullable Object obj) {
-        return ((Character)obj).name.toLowerCase().equalsIgnoreCase(name.toLowerCase());
+    public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {
+        //100 MB
+        builder.setDiskCache(new InternalCacheDiskCacheFactory(context, 100 * 1000000));
+        super.applyOptions(context, builder);
     }
 }
+

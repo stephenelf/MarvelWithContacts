@@ -24,7 +24,7 @@ public interface BaseDao<T> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(T t);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     long[] insert(List<T> t);
 
     @Update

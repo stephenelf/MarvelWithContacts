@@ -11,8 +11,12 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <string name="app_name">SimpleInterviewTestApp</string>
-    <string name="withContacts">with Contacts</string>
-    <string name="permission_required">Until you grant the permission, contacts can not be displayed</string>
-</resources>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="24.0"
+        android:viewportHeight="24.0">
+    <path
+        android:fillColor="@color/colorPrimary"
+        android:pathData="M9,16.17L4.83,12l-1.42,1.41L9,19 21,7l-1.41,-1.41z"/>
+</vector>

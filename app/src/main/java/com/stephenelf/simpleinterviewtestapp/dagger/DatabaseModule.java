@@ -14,6 +14,7 @@
 package com.stephenelf.simpleinterviewtestapp.dagger;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.room.Room;
 
@@ -30,9 +31,15 @@ public class DatabaseModule {
     @Provides
     @Singleton
     MyDatabase provideDatabase(Application application) {
-            return Room.databaseBuilder(application,
-                    MyDatabase.class, "my_database.db")
+            MyDatabase myDatabase= null;
+            try {
+                myDatabase = Room.databaseBuilder(application,
+                        MyDatabase.class, "my_database.db")
                         .fallbackToDestructiveMigration()
-                    .build();
+                        .build();
+            }catch (Exception e){
+                Log.e("KK","",e);
+            }
+            return myDatabase;
     }
 }

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright 2019 stephenelf@gmail.com(EB). All rights reserved.
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,8 +12,8 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <string name="app_name">SimpleInterviewTestApp</string>
-    <string name="withContacts">with Contacts</string>
-    <string name="permission_required">Until you grant the permission, contacts can not be displayed</string>
-</resources>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">i.annihil.us</domain>
+    </domain-config>
+</network-security-config>

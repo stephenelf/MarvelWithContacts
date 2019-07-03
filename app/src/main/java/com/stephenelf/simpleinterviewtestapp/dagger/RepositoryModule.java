@@ -15,7 +15,7 @@ package com.stephenelf.simpleinterviewtestapp.dagger;
 
 import android.app.Application;
 
-import com.stephenelf.simpleinterviewtestapp.Repository;
+import com.stephenelf.simpleinterviewtestapp.repositories.Repository;
 import com.stephenelf.simpleinterviewtestapp.database.MyDatabase;
 import com.stephenelf.simpleinterviewtestapp.net.MarvelAPI;
 import com.stephenelf.simpleinterviewtestapp.repositories.ContactsRepository;
@@ -32,25 +32,25 @@ public class RepositoryModule {
 
     @Provides
     @Singleton
-    public Repository providesRepository(Application application, LocalRepository localRepository, RemoteRepository remoteRepository, ContactsRepository contactsRepository){
-        return new Repository(application,localRepository,remoteRepository,contactsRepository);
+    public Repository providesRepository(Application application, LocalRepository localRepository, RemoteRepository remoteRepository, ContactsRepository contactsRepository) {
+        return new Repository(application, localRepository, remoteRepository, contactsRepository);
     }
 
     @Provides
     @Singleton
-    public ContactsRepository providesContactRepository(){
+    public ContactsRepository providesContactRepository() {
         return new ContactsRepository();
     }
 
     @Provides
     @Singleton
-    public LocalRepository providesLocalRepository( MyDatabase database){
+    public LocalRepository providesLocalRepository(MyDatabase database) {
         return new LocalRepository(database);
     }
 
     @Provides
     @Singleton
-    public RemoteRepository providesRemoteRepository(Application application, MarvelAPI marvelAPI){
-        return new RemoteRepository(application,marvelAPI);
+    public RemoteRepository providesRemoteRepository(Application application, MarvelAPI marvelAPI) {
+        return new RemoteRepository(application, marvelAPI);
     }
 }

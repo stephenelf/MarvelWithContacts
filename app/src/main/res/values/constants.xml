@@ -16,5 +16,5 @@
 
     <string name="marvel_public_key" translatable="false">0e469aac93ed81b266b2d4cd94288006</string>
     <string name="marvel_private_key" translatable="false">a7625563d4fcb27e849b584104e554e49fde8d87</string>
-    <string name="marver_base_url" translatable="false">https://gateway.marvel.com:443/v1/public/</string>
+    <string name="marver_base_url" translatable="false">https://gateway.marvel.com/v1/public/</string>
 </resources>

@@ -14,18 +14,38 @@
 package com.stephenelf.simpleinterviewtestapp;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.pm.PackageManager;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.VelocityTracker;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.dynamicanimation.animation.DynamicAnimation;
+import androidx.dynamicanimation.animation.SpringAnimation;
+import androidx.dynamicanimation.animation.SpringForce;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
+import com.stephenelf.simpleinterviewtestapp.repositories.Repository;
+import com.stephenelf.simpleinterviewtestapp.util.GlideApp;
+import com.stephenelf.simpleinterviewtestapp.util.People;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -40,10 +60,18 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 1;
     @BindView(R.id.people_view)
-    RecyclerView contactsView;
+    RecyclerView peopleView;
+
+    @BindView(R.id.logo)
+    View logo;
+
+    @BindView(R.id.sub_title)
+    View subTitle;
 
     @Inject
     Repository repository;
+
+    private PeopleAdapter peopleAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +81,21 @@ public class MainActivity extends AppCompatActivity {
         MyApplication.getInstance().getNetComponent().inject(this);
         checkPermissions();
         setupView();
-
+        startAnimation();
     }
 
     private void checkPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
-        }
+        } else
+            fillData();
     }
 
 
     private void setupView() {
-        contactsView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        peopleView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        peopleAdapter = new PeopleAdapter();
+        peopleView.setAdapter(peopleAdapter);
     }
 
     private void fillData() {
@@ -74,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(List<People> people) {
                         Log.e("KK", "success:" + people.size());
-                        
+                        peopleAdapter.setPeopleList(people);
                     }
 
                     @Override
@@ -90,30 +121,122 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
-               fillData();
+                fillData();
             } else {
-                Toast.makeText(this, "Until you grant the permission, contacts can not be displayed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.permission_required, Toast.LENGTH_SHORT).show();
             }
         }
     }
 
+    private void startAnimation() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-    private class PeopleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+        peopleView.setY(displayMetrics.heightPixels);
+        SpringAnimation peopleAnim = new SpringAnimation(peopleView, DynamicAnimation.TRANSLATION_Y,
+                (logo.getHeight() + subTitle.getHeight()));
+        VelocityTracker vt = VelocityTracker.obtain();
+        // Compute velocity in the unit pixel/second
+        vt.computeCurrentVelocity(5);
+        peopleAnim.setStartVelocity(vt.getYVelocity());
+
+        peopleAnim.getSpring().setStiffness(SpringForce.STIFFNESS_VERY_LOW);
+
+        logo.setAlpha(0);
+        subTitle.setAlpha(0);
+        logo.animate().alpha(1).setInterpolator(new DecelerateInterpolator()).setDuration(2000)
+                .start();
+
+        subTitle.animate().alpha(1).setInterpolator(new AccelerateInterpolator())
+                .setDuration(1000).setStartDelay(2000)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        peopleAnim.start();
+                    }
+                })
+                .start();
+    }
+
+
+    private class PeopleAdapter extends RecyclerView.Adapter<PeopleViewHolder> {
+
+        private List<People> peopleList = new ArrayList<>();
+        private LayoutInflater inflater = getLayoutInflater();
+
+
+        public void setPeopleList(List<People> peopleList) {
+            this.peopleList = peopleList;
+            notifyDataSetChanged();
+        }
 
         @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return null;
+        public PeopleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new PeopleViewHolder(inflater.inflate(R.layout.recycler_view_item, parent, false));
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+        public void onBindViewHolder(@NonNull PeopleViewHolder holder, int position) {
+            holder.onBind(peopleList.get(position).thumbnail, peopleList.get(position).name,
+                    peopleList.get(position).isChecked,
+                    peopleList.get(position).phone);
+            holder.itemView.setOnClickListener(v -> {
+                if (!peopleList.get(position).isChecked) {
+                    peopleList.get(position).isChecked = true;
+                    holder.check.setVisibility(View.VISIBLE);
+                } else {
+                    peopleList.get(position).isChecked = false;
+                    holder.check.setVisibility(View.GONE);
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
-            return 0;
+            return peopleList.size();
+        }
+    }
+
+    public class PeopleViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.people_icon)
+        ImageView icon;
+
+        @BindView(R.id.name)
+        TextView name;
+
+        @BindView(R.id.checkbox)
+        ImageView check;
+
+        @BindView(R.id.phone)
+        TextView phoneNumber;
+
+        public PeopleViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+
+        }
+
+        public void onBind(Uri thumbnail, String text, boolean isCheched, String phone) {
+            name.setText(text);
+
+            GlideApp.with(itemView.getContext())
+                    .load(thumbnail)
+                    .placeholder(R.drawable.ic_person_outline_24dp)
+                    .centerCrop()
+                    .apply(new RequestOptions().transform(new CircleCrop()))
+                    .into(icon);
+
+            if (isCheched)
+                check.setVisibility(View.VISIBLE);
+            else check.setVisibility(View.GONE);
+
+            if (phone != null) {
+                phoneNumber.setText(phone);
+                phoneNumber.setVisibility(View.VISIBLE);
+            } else
+                phoneNumber.setVisibility(View.GONE);
         }
     }
 }

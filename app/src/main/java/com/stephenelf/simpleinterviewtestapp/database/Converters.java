@@ -13,17 +13,22 @@
 
 package com.stephenelf.simpleinterviewtestapp.database;
 
-import androidx.room.Database;
-import androidx.room.RoomDatabase;
-import androidx.room.TypeConverters;
+import androidx.room.TypeConverter;
 
-import com.stephenelf.simpleinterviewtestapp.database.dao.CharacterDao;
+import com.stephenelf.simpleinterviewtestapp.net.response.ThumbnailResponse;
 
-@Database(entities = {Character.class},
-        exportSchema = false, version = 1)
+public class Converters {
 
-@TypeConverters({Converters.class})
-public abstract class MyDatabase extends RoomDatabase {
+    @TypeConverter
+    public static ThumbnailResponse stringToObject(String string) {
+        String[] parts=string.split(",");
+        return new ThumbnailResponse(parts[0],parts[1]);
+    }
 
-    public abstract CharacterDao characterDao();
+    @TypeConverter
+    public static String objectToString(ThumbnailResponse object) {
+        StringBuffer buffer=new StringBuffer();
+        buffer.append(object.path).append(",").append(object.extension);
+        return buffer.toString();
+    }
 }

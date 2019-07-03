@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2019 stephenelf@gmail.com(EB). All rights reserved.
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -13,21 +12,62 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="horizontal"
-              android:padding="8dp"
-              android:layout_width="match_parent" android:background="@drawable/background_round_corners"
-              android:layout_height="wrap_content">
-  <ImageView
-      android:id="@+id/imageView1"
-      android:layout_width="50dp"
-      android:layout_height="50dp"
-      tools:src="@tools:sample/avatars"/>
-  <TextView
-      android:id="@+id/textView1"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:padding="5dp"
-      tools:text="@tools:sample/lorem" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@drawable/background_round_corners_accent"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/people_icon"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:scaleType="centerCrop"
+        tools:src="@tools:sample/avatars" />
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:padding="4dp"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="@tools:sample/lorem" />
+
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:padding="4dp"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            tools:text="@tools:sample/lorem" />
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/checkbox"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/ic_check_24dp" />
 </LinearLayout>

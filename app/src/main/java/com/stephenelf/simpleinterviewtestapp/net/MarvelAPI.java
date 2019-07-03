@@ -21,11 +21,9 @@ import retrofit2.http.Query;
 
 public interface MarvelAPI {
 
-    /*
-     a md5 digest of the ts parameter, your private key and your public
-key (e.g. md5(ts+privateKey+publicKey))
-     */
+    int LIMIT = 50;
 
-    @GET("chareacters")
-    Single<CharacterResponse> getCharacters(@Query("apikey") String apiKey, @Query("ts") long timestamp, @Query("hash") String hash);
+    @GET("characters")
+    Single<CharacterResponse> getCharacters(@Query("apikey") String apiKey, @Query("ts") long timestamp, @Query("hash") String hash,
+                                            @Query("limit") int limit, @Query("offset") int offset);
 }

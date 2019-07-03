@@ -11,19 +11,21 @@
  * limitations under the License.
  */
 
-package com.stephenelf.simpleinterviewtestapp;
+package com.stephenelf.simpleinterviewtestapp.net.response;
 
-public class People {
+public class ThumbnailResponse {
 
-    public String name;
-    public String thumbnail;
+    public String path;
+    public String extension;
 
-    public People(String name, String thumbnail) {
-        this.name = name;
-        this.thumbnail = thumbnail;
+    public ThumbnailResponse(String path, String extension) {
+        this.path = path;
+        this.extension = extension;
     }
 
-
-    public People() {
+    public String toString(){
+        StringBuffer buffer=new StringBuffer();
+        buffer.append(path).append(".").append(extension);
+        return buffer.toString();
     }
 }

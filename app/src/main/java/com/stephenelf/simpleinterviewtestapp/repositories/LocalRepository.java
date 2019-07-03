@@ -16,10 +16,7 @@ package com.stephenelf.simpleinterviewtestapp.repositories;
 import com.stephenelf.simpleinterviewtestapp.database.Character;
 import com.stephenelf.simpleinterviewtestapp.database.MyDatabase;
 
-import java.util.Collections;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
@@ -31,19 +28,19 @@ public class LocalRepository {
     private MyDatabase myDatabase;
 
 
-    @Inject
-    public LocalRepository( MyDatabase myDatabase) {
+    public LocalRepository(MyDatabase myDatabase) {
         this.myDatabase = myDatabase;
     }
 
-    public Maybe<List<Character>> getAllCharacters(){
-        return Maybe.just(Collections.emptyList());//myDatabase.characterDao.getAllCharacters();
+    public Maybe<List<Character>> getAllCharacters() {
+        return myDatabase.characterDao().getAllCharacters();
     }
 
-    public void saveCharacters(final List<Character> characters){
-        Completable.fromAction(()-> myDatabase.characterDao.insert(characters))
+    public void saveCharacters(final List<Character> characters) {
+        Completable.fromAction(() -> myDatabase.characterDao().insert(characters))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
+
     }
 }

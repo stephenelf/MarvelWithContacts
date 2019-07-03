@@ -29,6 +29,7 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -76,9 +77,37 @@ public class NetModule {
         return gsonBuilder.create();
     }
 
+
+    @Provides
+    @Named("logs_enabled")
+    @Singleton
+    OkHttpClient provideOkHttpLogsEnabled() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+        HttpLoggingInterceptor interceptor2 = new HttpLoggingInterceptor();
+        interceptor2.setLevel(HttpLoggingInterceptor.Level.BODY);
+        HttpLoggingInterceptor interceptor3 = new HttpLoggingInterceptor();
+        interceptor3.setLevel(HttpLoggingInterceptor.Level.BASIC);
+
+
+        //  OkHttpClient client =  getUnsafeOkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor)
+                .addInterceptor(interceptor)
+                .addInterceptor(interceptor2)
+                .addInterceptor(interceptor3)
+                .cache(null) //disable cache
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60 / 2, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .hostnameVerifier((hostname, session) -> true)
+                .build();
+
+        return client;
+    }
+
     @Provides
     @Singleton
-    Retrofit provideRetrofit(Gson gson, @Named("cached") OkHttpClient okHttpClient) {
+    Retrofit provideRetrofit(Gson gson, @Named("logs_enabled") OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(mBaseUrl)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

@@ -11,19 +11,29 @@
  * limitations under the License.
  */
 
-package com.stephenelf.simpleinterviewtestapp.database;
+package com.stephenelf.simpleinterviewtestapp.util;
 
-import androidx.room.Database;
-import androidx.room.RoomDatabase;
-import androidx.room.TypeConverters;
+import android.net.Uri;
 
-import com.stephenelf.simpleinterviewtestapp.database.dao.CharacterDao;
+public class People {
 
-@Database(entities = {Character.class},
-        exportSchema = false, version = 1)
+    public String name;
+    public Uri thumbnail;
+    public String phone;
 
-@TypeConverters({Converters.class})
-public abstract class MyDatabase extends RoomDatabase {
+    public boolean isChecked;
 
-    public abstract CharacterDao characterDao();
+    public People(String name, Uri thumbnail) {
+        this.name = name;
+        this.thumbnail = thumbnail;
+    }
+
+    public People(String name, Uri thumbnail, String phone) {
+        this.name = name;
+        this.thumbnail = thumbnail;
+        this.phone = phone;
+    }
+
+    public People() {
+    }
 }

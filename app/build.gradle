@@ -17,7 +17,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion "29.0.0"
     defaultConfig {
-        applicationId "com.stephenelf.simpleinterviewtestapp"
+        applicationId "com.stephenelf.marvelwithcontacts.simpleinterviewtestapp"
         minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
@@ -45,7 +45,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
     // implementation 'com.trello.rxlifecycle2:rxlifecycle:2.2.2'
     //implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.2'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'

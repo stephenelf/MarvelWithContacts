@@ -18,7 +18,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:padding="8dp"
-    tools:context=".MainActivity">
+    tools:context="com.stephenelf.marvelwithcontacts.MainActivity">
 
     <LinearLayout
         android:id="@+id/container"

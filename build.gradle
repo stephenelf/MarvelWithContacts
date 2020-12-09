@@ -45,9 +45,9 @@ task clean(type: Delete) {
 
 sonarqube{
     properties{
-        property "sonar.host.url", System.getEnv("SONAR:HOST")
+        property "sonar.host.url", "http://docker.for.mac.localhost:9000"
         property "sonar.projectKey","marvelwithcontacts"
-        property "sonar.login",System.getEnv("SONAR_LOGIN")
+        property "sonar.login","b825b1f5e131b0f6bb0b8a16f31256d440185373"
         property "sonar.sources", "src/main/java"
         property "sonar.binaries", "build/intermediates/classes/debug"
 

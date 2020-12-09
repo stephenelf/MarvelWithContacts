@@ -107,7 +107,7 @@ public class NetModule {
 
     @Provides
     @Singleton
-    Retrofit provideRetrofit(Gson gson, @Named("cached") OkHttpClient okHttpClient) {
+    Retrofit provideRetrofit(Gson gson, @Named("logs_enabled") OkHttpClient okHttpClient) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(mBaseUrl)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

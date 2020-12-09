@@ -13,6 +13,9 @@
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+
+apply plugin: 'org.sonarqube'
+
 buildscript {
     repositories {
         google()
@@ -20,7 +23,8 @@ buildscript {
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.0"
         
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -37,4 +41,16 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+sonarqube{
+    properties{
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.projectKey","marvelwithcontacts"
+        property "sonar.login","becb65ac9420df41c83fca4053fd46568d9077d1"
+        property "sonar.sources", "src/main/java"
+        property "sonar.binaries", "build/intermediates/classes/debug"
+
+        //cda585dbcff1333ea45ff8966c6baffd9fe69841
+    }
 }

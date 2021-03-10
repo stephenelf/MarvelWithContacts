@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     private PeopleAdapter peopleAdapter;
 
-    private final String TEST_RULE="rochedc.accentureanalytics.com"
+    private final String TEST_RULE="rochedc.accentureanalytics.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
